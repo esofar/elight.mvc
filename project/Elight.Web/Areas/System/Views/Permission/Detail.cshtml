@@ -1,0 +1,154 @@
+﻿@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<form id="form" class="layui-form" style="margin-top: 25px">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="EnCode" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="Id" disabled />
+                <input type="text" name="Name" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">父级</label>
+            <div class="layui-input-inline">
+                <select class="select2" lay-ignore name="ParentId" id="ParentId" style="width: 190px;">
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">连接</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Url" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-inline">
+                <select name="Type">
+                    <option value=""></option>
+                    <option value="0">菜单</option>
+                    <option value="1">按钮</option>
+                    <option value="2">其他</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">事件</label>
+            <div class="layui-input-inline">
+                <input type="text" name="JsEvent" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Icon" autocomplete="off" class="layui-input" disabled />
+            </div>
+            <button class="layui-btn layui-btn-primary" id="btnSetIcon" style="position: absolute; left: 244px;">
+                <i class="layui-icon">&#xe615;</i>
+            </button>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">排序码</label>
+            <div class="layui-input-inline">
+                <input type="number" name="SortCode" lay-verify="number" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选项</label>
+        <div class="layui-input-block">
+            <input type="checkbox" lay-skin="primary" name="IsEnable" value="true" title="启用" checked>
+            <input type="checkbox" lay-skin="primary" name="IsEdit" value="true" title="编辑">
+            <input type="checkbox" lay-skin="primary" name="IsPublic" value="true" title="公共">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-inline" style="width: 514px">
+            <textarea name="Remark" class="layui-textarea" disabled></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">创建人员</label>
+            <div class="layui-input-inline">
+                <input type="text" name="CreateUser" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="CreateTime" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">修改人员</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ModifyUser" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">修改时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ModifyTime" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    layui.use('form', function () {
+        var form = layui.form();
+
+        $("#ParentId").bindSelect({
+            url: "/System/Permission/GetParent"
+        });
+
+        var primaryKey = $.getQueryString("primaryKey");
+        $.ajax({
+            url: "/System/Permission/GetForm",
+            data: { primaryKey: primaryKey },
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#form").formSerialize(data);
+            }
+        });
+
+        form.render();
+
+        $("#btnSetIcon").click(function () {
+            $.layerOpen({
+                id: "icon",
+                title: "设置图标",
+                width: "800px",
+                height: "580px",
+                maxmin: true,
+                content: "/System/Permission/Icon",
+                yes: function (iframeWin, index) {
+                    $('#Icon').val(iframeWin.className);
+                    top.layer.close(index);
+                }
+            });
+            return false;
+        });
+    });
+</script>

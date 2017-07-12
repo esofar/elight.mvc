@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<div class="alert alert-warning">
+    提醒：日志删除后无法恢复，请谨慎操作。
+</div>
+<form id="form" class="layui-form" style="margin: 20px">
+    @Html.AntiForgeryToken()
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="radio" name="keepType" value="30" title="保留最近1个月">
+            <input type="radio" name="keepType" value="7" title="保留最近7天">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="radio" name="keepType" value="90" title="保留最近3个月">
+            <input type="radio" name="keepType" value="0" title="全部清空">
+        </div>
+    </div>
+    <div class="layui-form-item" style="display: none">
+        <div class="layui-input-inline">
+            <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="add">提交</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    layui.use('form', function () {
+        var form = layui.form();
+
+        form.on('submit(add)', function (data) {
+            $.formSubmit({
+                url: "/System/Log/Delete",
+                data: data.field
+            });
+            return false;
+        });
+    });
+</script>

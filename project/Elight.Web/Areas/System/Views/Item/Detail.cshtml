@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+
+<form id="form" class="layui-form" style="margin-top: 25px">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编码</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="Id" />
+                <input type="text" name="EnCode" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Name" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">父级</label>
+            <div class="layui-input-inline">
+                <select class="select2" lay-ignore name="ParentId" id="ParentId" style="width: 190px">
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">排序码</label>
+            <div class="layui-input-inline">
+                <input type="number" name="SortCode" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选项</label>
+        <div class="layui-input-block">
+            <input type="checkbox" lay-skin="primary" name="IsEnabled" value="true" title="启用" checked>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block" style="width: 514px;">
+            <textarea name="Remark" class="layui-textarea" disabled></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">创建人员</label>
+            <div class="layui-input-inline">
+                <input type="text" name="CreateUser" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="CreateTime" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">修改人员</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ModifyUser" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">修改时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ModifyTime" autocomplete="off" class="layui-input" disabled />
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form();
+
+        $("#ParentId").bindSelect({
+            url: "/System/Item/GetListSelectTree"
+        });
+
+        var primaryKey = $.getQueryString("primaryKey");
+        if (primaryKey) {
+            $.ajax({
+                url: "/System/Item/GetForm",
+                data: { primaryKey: primaryKey },
+                type: "post",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form").formSerialize(data);
+                }
+            });
+        }
+
+        form.render();
+
+    });
+</script>
+
+

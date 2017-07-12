@@ -1,0 +1,133 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(53,51,51,0.5);
+}
+
+    html, body:before {
+        background: url(/Content/framework/images/login.jpg);
+        background-size: 100% 100%;
+        -moz-background-size: 100% 100%;
+        -webkit-background-size: 100% 100%;
+    }
+
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #34A8FF;
+    background-color: #34A8FF;
+}
+
+.elight-login-box {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 450px;
+    padding-top: 120px;
+    height: inherit;
+    background-color: #fff;
+    color: aliceblue;
+    box-shadow: 0px 0px 5px rgba(53,51,51,0.5);
+}
+
+@media screen and (max-width: 768px) {
+    .elight-login-box {
+        width: 100%;
+        padding-top: 20%;
+        height: inherit;
+        background-color: #fff;
+        color: aliceblue;
+        box-shadow: 0px 0px 5px rgba(53,51,51,0.5);
+    }
+
+    .elight-pull-right {
+        float: left !important;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.elight-login-box .elight-login-header {
+    font-family: Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans";
+    color: #334054;
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+    width: 100%;
+}
+
+.elight-login-box .elight-login-body {
+    height: 185px;
+    padding: 30px 90px 0;
+}
+
+    .elight-login-box .elight-login-body .layui-form-item {
+        position: relative;
+    }
+
+
+        .elight-login-box .elight-login-body .layui-form-item .login-icon {
+            position: absolute;
+            color: #cccccc;
+            top: 10px;
+            left: 10px;
+        }
+
+        .elight-login-box .elight-login-body .layui-form-item input {
+            padding-left: 34px;
+            color: #929191;
+        }
+
+.elight-pull-left {
+    float: left !important;
+    height: 100%;
+}
+
+.elight-pull-right {
+    float: right !important;
+    height: 100%;
+}
+
+.elight-login-box .elight-login-body .login-remember {
+    line-height: 38px;
+    color: #777;
+}
+
+.elight-login-box .elight-login-body .login-code-box img {
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    top: 5px;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: #0099CC;
+}
+
+.elight-product-box {
+    padding-right: 475px;
+    padding-left: 70px;
+    padding-top: 150px;
+    text-align: justify;
+    max-width: 100%;
+}
+
+    .elight-product-box h2 {
+        font-size: 25px;
+        font-weight: 500;
+        margin-bottom: 30px;
+        color: #fff;
+    }
+
+    .elight-product-box .product-desc li {
+        color: #fff;
+        list-style: disc;
+        margin-top: 7px;
+        max-width: 650px;
+    }
+
+    .elight-product-box .product-btns {
+        margin-top: 20px;
+    }

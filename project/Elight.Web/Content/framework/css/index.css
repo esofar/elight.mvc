@@ -1,0 +1,322 @@
+﻿
+/*头部区域*/
+.layui-layout-admin .layui-header {
+    background-color: #009FD9;
+    height: 50px;
+}
+
+.layui-tab-bar {
+    display: none;
+}
+
+.layui-header .layui-nav {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 0px;
+    background: inherit;
+    height: inherit;
+}
+
+    .layui-header .layui-nav .layui-nav-item {
+        margin: 0px;
+        line-height: 50px;
+    }
+
+        .layui-header .layui-nav .layui-nav-item .layui-nav-child {
+            left: auto;
+            right: 0;
+            top: 55px;
+        }
+
+        .layui-header .layui-nav .layui-nav-item .layui-nav-more,
+        .layui-header .layui-nav .layui-nav-item .layui-nav-mored {
+            display: none;
+        }
+
+        .layui-header .layui-nav .layui-nav-item a {
+            color: #fff;
+            cursor: pointer;
+            border-left: 1px solid #0aaae5;
+        }
+
+            .layui-header .layui-nav .layui-nav-item a:hover {
+                background-color: #008CBF;
+            }
+
+        .layui-header .layui-nav .layui-nav-item .layui-anim-upbit a {
+            color: #999;
+            cursor: pointer;
+            border-left: 0px;
+        }
+
+            .layui-header .layui-nav .layui-nav-item .layui-anim-upbit a:hover {
+                background-color: #EEEEEE;
+            }
+
+        .layui-header .layui-nav .layui-nav-item .layui-anim-upbit .layui-this {
+            background-color: #fff;
+        }
+
+    .layui-header .layui-nav-bar, .layui-header .layui-nav .layui-this:after {
+        height: 0px;
+    }
+
+    .layui-header .layui-nav .layui-this a {
+        padding: 0 20px;
+    }
+
+.layui-header-title {
+    height: inherit;
+    width: 90%;
+}
+
+.layui-header-logo {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    left: 13px;
+}
+
+.layui-header-title div {
+    height: 60px;
+    width: 59px;
+    border-right: 1px solid #0baae4;
+}
+
+.layui-header-title span {
+    position: absolute;
+    left: 65px;
+    top: 12px;
+}
+
+    .layui-header-title span a:hover {
+        color: #fff;
+    }
+
+.layui-header-name {
+    font-size: 22px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.layui-header-sidebar {
+    position: relative;
+    color: #fff;
+    cursor: pointer;
+    bottom: 3px;
+    line-height: 33px;
+    margin-left: 20px;
+}
+
+/*头部区域END*/
+
+/*左侧导航区域*/
+
+.layui-layout-admin .layui-side {
+    top: 50px;
+}
+
+.layui-nav-tree .layui-nav-child dd {
+    padding-left: 15px;
+}
+
+    .layui-nav-tree .layui-nav-child dd.layui-this,
+    .layui-nav-tree .layui-this, .layui-nav-tree .layui-this > a,
+    .layui-nav-tree .layui-this > a:hover {
+        background-color: #009FD9;
+    }
+
+.layui-nav-tree .layui-nav-bar {
+    background-color: #009FD9;
+}
+
+.layui-nav-item .layui-icon {
+    position: relative;
+}
+
+.layui-nav-item a cite {
+    padding: 0 10px;
+}
+
+.layui-navbar-min,
+.layui-navbar-min > div,
+.layui-navbar-min .beg-navbar {
+    width: 60px !important;
+}
+
+    .layui-navbar-min cite,
+    .layui-navbar-min .layui-nav-more {
+        display: none;
+    }
+
+    .layui-navbar-min .layui-nav-tree .layui-nav-child dd {
+        padding-left: 0px;
+    }
+
+    .layui-navbar-min .layui-nav-tree .layui-nav-child a {
+        text-align: center;
+    }
+
+/*左侧导航区域END*/
+
+/* 右侧内容区域 start */
+
+.layui-layout-admin .layui-body {
+    top: 50px;
+    bottom: 0;
+}
+
+.layui-tab {
+    border: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+    .layui-tab .layui-icon {
+        position: relative;
+    }
+
+    .layui-tab .layui-tab-item iframe {
+        width: 100%;
+        border: 0;
+        height: 100%;
+        background-color: #EBF1F3;
+        padding-left:15px;
+    }
+
+    .layui-tab .layui-tab-title {
+        border-bottom: 1px solid #E4EAEC;
+        margin-left: 40px;
+        margin-right: 80px;
+    }
+
+    .layui-tab .layui-tab-content {
+        padding-right: 15px;
+        padding: 0px;
+        background-color: #EBF1F3;
+    }
+
+    .layui-tab .layui-tab-title cite {
+        font-style: normal;
+        padding-left: 5px;
+    }
+
+    .layui-tab > .layui-tab-title .layui-this {
+        color: #fff;
+        background-color: #393D49;
+    }
+
+        .layui-tab > .layui-tab-title .layui-this:after {
+            border-bottom: 0px;
+        }
+
+.layui-tab-rollleft,
+.layui-tab-rollright,
+.layui-tab-fullscreen {
+    background-color: #fff;
+    border: 0px;
+    height: 40px;
+    z-index: 999;
+    width: 40px;
+    text-align: center;
+    cursor: pointer;
+    line-height: 40px;
+    color: #9FACC8;
+    border-bottom: 1px solid #E4EAEC;
+}
+
+    .layui-tab-rollleft:hover,
+    .layui-tab-rollright:hover,
+    .layui-tab-fullscreen:hover {
+        background-color: #F2F2F2;
+    }
+
+.layui-tab-rollleft {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-right: 1px solid #ddd;
+}
+
+.layui-tab-rollright {
+    position: absolute;
+    top: 0px;
+    right: 40px;
+    border-left: 1px solid #ddd;
+}
+
+.layui-tab-fullscreen {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border-left: 1px solid #ddd;
+}
+
+.layui-tab-contextmenu {
+    position: absolute;
+    line-height: 36px;
+    padding: 5px 0;
+    border: 1px solid #d2d2d2;
+    background-color: white;
+    z-index: 19940201;
+    border-radius: 2px;
+    white-space: nowrap;
+    top: 30px;
+}
+
+    .layui-tab-contextmenu ul li {
+        padding: 0 15px;
+        line-height: 30px;
+        text-align: left;
+        font-weight: 400;
+        color: #868686;
+    }
+
+        .layui-tab-contextmenu ul li:hover {
+            background-color: #eee;
+            cursor: pointer;
+        }
+
+/* 右侧内容区域 end */
+
+
+/*锁屏*/
+.layui-lock-box {
+    width: 320px;
+    height: 150px;
+    padding: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.layui-lock-img {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+}
+
+    .layui-lock-img img {
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+    }
+
+.layui-lock-name {
+    color: #009688;
+    margin: 8px 0 15px 0;
+}
+
+.layui-lock-input {
+    width: 150px;
+    color: #FFFFFF;
+    height: 30px;
+    border: 0;
+    background-color: #009688;
+    padding: 0 7px;
+    border-radius: 2px;
+}
+/*锁屏END*/

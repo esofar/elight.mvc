@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<form id="form" class="layui-form" style="margin-top: 25px">
+    @Html.AntiForgeryToken()
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">账号</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="Id" />
+                <input type="text" name="Account" id="Account" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">初始密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="Password" id="Password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="NickName" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="RealName" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">出生日期</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="Birthday" lay-verify="required" placeholder="请选择日期" onclick="layui.laydate({ elem: this })" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">性别</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="Gender" value="true" title="男" checked />
+                <input type="radio" name="Gender" value="false" title="女" />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">所属机构</label>
+            <div class="layui-input-inline">
+                <select lay-ignore name="OrganizeId" id="OrganizeId" lay-verify="required" style="width: 190px" class="select2">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">角色属性</label>
+            <div class="layui-input-inline">
+                <select lay-ignore name="RoleId" class="select2" id="RoleId" multiple="multiple" style="width: 514px;">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">移动电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="MobilePhone" lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">联系地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Address" lay-verify="required" placeholder="请输入地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">排序码</label>
+            <div class="layui-input-inline">
+                <input type="number" name="SortCode" lay-verify="number" placeholder="请输入排序" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label label-required">启用</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="IsEnabled" value="true" title="是" checked />
+                <input type="radio" name="IsEnabled" value="false" title="否" />
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">个性签名</label>
+            <div class="layui-input-inline" style="width: 514px;">
+                <textarea name="Signature" placeholder="请输入个性签名" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" style="display: none">
+        <div class="layui-input-block">
+            <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="add">提交</button>
+        </div>
+    </div>
+</form>
+
+<script src="~/Content/jquery/jquery.md5.js"></script>
+<script>
+    layui.use(['element', 'form', 'laydate', 'layer'], function () {
+        var form = layui.form();
+        var element = layui.element();
+
+        $("#OrganizeId").bindSelect({
+            url: "/System/Organize/GetListTreeSelect"
+        });
+
+        $("#RoleId").bindSelect({
+            url: "/System/Role/GetListTreeSelect",
+            title: '请选择角色'
+        });
+
+        $('#Account').blur(function () {
+            var userName = $('#Account').val();
+            if (userName && userName.length > 0) {
+                $.formSubmit({
+                    url: '/System/User/CheckAccount',
+                    data: { userName: userName },
+                    close: false
+                });
+            }
+            return false;
+        });
+
+        var primaryKey = $.getQueryString("primaryKey");
+        if (primaryKey) {
+            $('#Account').attr('disabled', true).addClass('layui-disabled');
+            $('#Password').attr('disabled', true).val('******').addClass('layui-disabled');
+            $.ajax({
+                url: "/System/User/GetForm",
+                data: { primaryKey: primaryKey },
+                type: "post",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form").formSerialize(data);
+                }
+            });
+        }
+
+        form.render();
+
+        form.on('submit(add)', function (form) {
+            //角色信息。
+            form.field.roleIds = $("#RoleId").val().join();
+            //密码加密。
+            form.field.password = $.md5(form.field['Password']);
+            $.formSubmit({
+                url: "/System/User/Form",
+                data: form.field
+            });
+            return false;
+        });
+
+    });
+</script>

@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Index</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/ztree/css/metroStyle/metroStyle.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/console.css" rel="stylesheet" />
+    <script src="~/Content/jquery/jquery.min.js"></script>
+    <script src="~/Content/ztree/js/jquery.ztree.all.min.js"></script>
+    <script src="~/Content/framework/js/global.js"></script>
+</head>
+<body>
+    <div>
+        <ul id="treePermission" class="ztree"></ul>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    var roleId = $.getQueryString("primaryKey");
+    if (roleId == '' || roleId == undefined) {
+        $.layerMsg('未捕获到角色ID，请关闭后重试。', 'error');
+    } else {
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            check: {
+                enable: true,
+                chkStyle: "checkbox",
+                chkDisabledInherit: false
+            },
+            async: {
+                enable: true,
+                url: "/System/RoleAuthorize/Index",
+                dataType: "text",
+                autoParam: ["id", "name"],
+                otherParam: { roleId: roleId }
+            }
+        };
+        var zTreeObj = $.fn.zTree.init($("#treePermission"), setting);
+    }
+
+    function formSubmit() {
+        var zTreeObj = $.fn.zTree.getZTreeObj("treePermission");
+        var checkedNodes = zTreeObj.getCheckedNodes(true);
+        var nodeIds = [];
+        $.each(checkedNodes, function (index, item) {
+            nodeIds.push(item.id);
+        });
+        $.formSubmit({
+            url: "/System/RoleAuthorize/Form",
+            data: { roleId: roleId, perIds: nodeIds.join() }
+        });
+    }
+
+</script>

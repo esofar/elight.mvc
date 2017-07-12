@@ -1,0 +1,135 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>日志列表</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/console.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="~/Content/jquery/jquery.min.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/framework/js/global.js"></script>
+</head>
+<body>
+    <div class="panel animated fadeIn">
+        <div class="panel-body">
+            <div id="toolbar" class="elight-table-toolbar">
+                <div class="layui-btn-group" id="queryDate">
+                    <button value="1" class="layui-btn layui-btn-primary layui-btn-small">今天</button>
+                    <button value="7" class="layui-btn layui-btn-primary layui-btn-small active">近7天</button>
+                    <button value="30" class="layui-btn layui-btn-primary layui-btn-small">近1个月</button>
+                    <button value="90" class="layui-btn layui-btn-primary layui-btn-small">近3个月</button>
+                </div>
+                <div class="layui-btn-group"></div>
+                <button id="btnSearch" class="toolbar-search-button layui-btn layui-btn-normal layui-btn-small">
+                    <i class="layui-icon">&#xe615;</i>
+                </button>
+                <div class="toolbar-search-input">
+                    <input type="text" id="keyWord" placeholder="用户账号或姓名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <table id="gridList" class="layui-form layui-table table-hover elight-table" lay-skin="line">
+                <thead>
+                    <tr>
+                        <th>发生时间</th>
+                        <th>日志级别</th>
+                        <th>操作账号</th>
+                        <th>真实姓名</th>
+                        <th>操作模块</th>
+                        <th>提示信息</th>
+                        <th>操作者IP</th>
+                        <th>IP归属地</th>
+                        <th>浏览器信息</th>
+                    </tr>
+                </thead>
+                <!--内容容器-->
+                <tbody id="content"></tbody>
+            </table>
+            <div id="paged"></div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!--内容模板-->
+<script id="contentTpl" type="text/html">
+    {{#  layui.each(d.list, function(index, item){ }}
+  <tr>
+      <td>{{item.CreateTime}}</td>
+      <td>{{item.LogLevel}}</td>
+      <td>{{item.Account}}</td>
+      <td>{{item.RealName}}</td>
+      <td>{{item.Operation}}</td>
+      <td>{{item.Message}}</td>
+      <td>{{item.IP}}</td>
+      <td>{{item.IPAddress}}</td>
+      <td>{{item.Browser}}</td>
+  </tr>
+    {{#  }); }}
+     {{# if(d.list.length<=0) { }}
+        <tr style="color: red">
+            <td colspan="9">查无数据。</td>
+        </tr>
+    {{# } }}
+</script>
+
+<script type="text/javascript">
+    var paging;
+    layui.config({
+        base: parent._baseUrl
+    }).use(['paging', 'form'], function () {
+        var form = layui.form();
+        paging = layui.paging();
+        initGrid();
+        $("#toolbar").authorizeButton();
+        $('#btnSearch').click(initGrid);
+        $('#keyWord').bindEnterEvent(initGrid);
+
+        $('#queryDate').find('button').click(function (i, v) {
+            $(this).addClass('active');
+            $(this).siblings('button').removeClass('active');
+            initGrid();
+        });
+    });
+
+    function initGrid() {
+        paging.init({
+            url: '/System/Log/Index',
+            elem: '#content',
+            tempElem: '#contentTpl',
+            checkbox: false,
+            params: {
+                keyWord: $("#keyWord").val(),
+                queryDate: $('#queryDate').find('button.active').val()
+            },
+            pageConfig: {
+                elem: '#paged',
+                pageSize: 10
+            }
+        });
+    }
+
+    function btn_delete() {
+        $.layerOpen({
+            id: "delete",
+            title: "删除日志",
+            width: "450px",
+            height: "300px",
+            content: "/System/Log/Delete",
+            yes: function (iBody) {
+                iBody.find('#btnSubmit').click();
+                initGrid();
+            }
+        });
+    }
+
+</script>
+
+
+

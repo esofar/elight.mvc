@@ -1,0 +1,339 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>账户管理</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/console.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="~/Content/jquery/jquery.min.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/framework/js/global.js"></script>
+    <style type="text/css">
+        .avatar-add {
+            margin-top: 35px;
+            text-align: center;
+        }
+
+            .avatar-add p {
+                margin-bottom: 20px;
+                font-size: inherit;
+                text-align: center;
+                color: #999;
+            }
+
+        .account-header {
+            margin-top: 20px;
+        }
+
+            .account-header .avatar {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+            }
+
+            .account-header .username {
+                margin-top: 10px;
+                color: #263238;
+                font-size: 16px;
+            }
+
+        .account-stat-count {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 20px;
+            font-weight: 300;
+            color: #526069;
+        }
+
+        .layui-tab-brief > .layui-tab-more li.layui-this:after, .layui-tab-brief > .layui-tab-title .layui-this:after {
+            border-bottom: 3px solid #34A8FF;
+        }
+
+
+        /*----------------------------------------------------------------------*/
+        .bind-box .bind-box-item {
+            height: 88px;
+            overflow: hidden;
+            margin: auto;
+            border-bottom: 1px solid #d9dde1;
+            /*border-top: 1px solid #d9dde1;*/
+        }
+
+            .bind-box .bind-box-item .title {
+                color: #2b333b;
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .bind-box .bind-box-item .status {
+                padding-left: 5px;
+                color: #f01414;
+                font-size: 14px;
+            }
+
+            .bind-box .bind-box-item .left {
+                width: 60px;
+                float: left;
+                text-align: center;
+                font-size: 36px;
+                color: #d9dde1;
+                line-height: 87px;
+                padding-left: 25px;
+            }
+
+            .bind-box .bind-box-item .center {
+                float: left;
+                font-size: 14px;
+                color: inherit;
+                line-height: 24px;
+                margin-left: 30px;
+                margin-top: 20px;
+            }
+
+            .bind-box .bind-box-item .right {
+                float: right;
+                padding-right: 12px;
+                margin-top: 28px;
+            }
+    </style>
+</head>
+<body>
+    <div class="container-fluid animated fadeIn">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel container-panel" style="height: 360px;">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body text-center">
+                        <div class="account-header">
+                            <img class="avatar" src="#" alt="" />
+                            <h4 class="username"><span class="account">admin</span>@@<span class="realName">管理员</span></h4>
+                            <p>上次登录：<span class="last-login">2017-6-8 10:24:26</span></p>
+                        </div>
+                        <div class="account-footer row">
+                            <div class="col-md-4">
+                                <strong class="account-stat-count login-number">1593</strong> <span>登录</span>
+                            </div>
+                            <div class="col-md-4">
+                                <strong class="account-stat-count msg-number">35</strong> <span>消息</span>
+                            </div>
+                            <div class="col-md-4">
+                                <strong class="account-stat-count log-number">0</strong> <span>日志</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="panel container-panel">
+                    <div class="panel-body">
+                        <div class="layui-tab layui-tab-brief">
+                            <ul class="layui-tab-title">
+                                <li class="layui-this"><i class="fa fa-credit-card" aria-hidden="true"></i>&nbsp;资料</li>
+                                <li><i class="fa fa-image" aria-hidden="true"></i>&nbsp;头像</li>
+                                <li><i class="fa fa-key" aria-hidden="true"></i>&nbsp;账号</li>
+                                <li><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;日志</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item layui-show">
+                                    <form id="form" class="layui-form" style="margin-top: 30px;">
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">账号</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="hidden" name="Id" />
+                                                    <input type="hidden" name="Avatar" id="Avatar" />
+                                                    <input type="text" name="Account" id="Account" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">昵称</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="NickName" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">姓名</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="RealName" id="RealName" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">性别</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="radio" name="Gender" value="true" title="男" checked />
+                                                    <input type="radio" name="Gender" value="false" title="女" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">出生日期</label>
+                                                <div class="layui-input-inline">
+                                                    <input class="layui-input" name="Birthday" placeholder="请选择日期" onclick="layui.laydate({ elem: this })" />
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">邮箱</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="Email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">移动电话</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="MobilePhone" lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">联系地址</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="Address" placeholder="请输入地址" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label">个性签名</label>
+                                                <div class="layui-input-inline" style="width: 514px;">
+                                                    <textarea name="Signature" placeholder="请输入个性签名" class="layui-textarea"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <button id="btnSubmit" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBasicInfo">保存</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="avatar-add">
+                                        <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过30KB！</p>
+                                        <input type="file" name="file" class="layui-upload-file" lay-title="上传头像">
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="bind-box">
+                                        <div class="bind-box-item">
+                                            <div class="left">
+                                                <i class="fa fa-shield" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="center">
+                                                <p>
+                                                    <span class="title">密码</span><span class="status">已设置</span>
+                                                </p>
+                                                <p class="font2">用于保护账号信息和登录安全</p>
+                                            </div>
+                                            <div class="right">
+                                                <button id="btnModifyPwd" class="layui-btn layui-btn-primary">修改</button>
+                                            </div>
+                                        </div>
+                                        <div class="bind-box-item">
+                                            <div class="left">
+                                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="center">
+                                                <p>
+                                                    <span class="title">邮箱</span><span class="status">未认证</span>
+                                                </p>
+                                                <p class="font2">可用邮箱加密码登录系统，可用邮箱找回密码</p>
+                                            </div>
+                                            <div class="right">
+                                                <button class="layui-btn layui-btn-primary">立即认证</button>
+                                            </div>
+                                        </div>
+                                        <div class="bind-box-item">
+                                            <div class="left">
+                                                <i class="fa fa-phone-square" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="center">
+                                                <p>
+                                                    <span class="title">手机</span><span class="status">136*****189</span>
+                                                </p>
+                                                <p class="font2">可用手机号加密码登录系统，可通过手机号找回密码</p>
+                                            </div>
+                                            <div class="right">
+                                                <button class="layui-btn layui-btn-primary">更改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <p>开发中，敬请期待...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    layui.use(['element', 'form', 'laydate', 'upload'], function () {
+        var form = layui.form();
+        var element = layui.element();
+
+        $.ajax({
+            url: "/Account/GetInfoCardForm",
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#form").formSerialize(data);
+                $('.avatar').attr('src', $('#Avatar').val() + '?v=' + Math.random());
+                $('.account').html($('#Account').val());
+                $('.realName').text($('#RealName').val());
+            }
+        });
+
+        form.render();
+
+        form.on('submit(saveBasicInfo)', function (data) {
+            $.formSubmit({
+                url: "/Account/InfoCard",
+                data: data.field
+            });
+            return false;
+        });
+
+        layui.upload({
+            url: '/Account/UploadAvatar',
+            method: 'post',
+            ext: 'jpg|png|gif',
+            success: function (res) {
+                if (res.state == 0) {
+                    $.layerMsg(res.message);
+                } else {
+                    $('#Avatar').val(res.data);
+                    $('.avatar').attr('src', res.data + '?v=' + Math.random());
+                }
+            }
+        });
+
+        $('#btnModifyPwd').click(function () {
+            $.layerOpen({
+                id: "modifyPwd",
+                title: "修改密码",
+                width: "450px",
+                height: "310px",
+                content: "/Account/ModifyPwd",
+                btn: null
+            });
+        });
+    });
+</script>
+

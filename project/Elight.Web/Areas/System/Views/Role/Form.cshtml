@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<form id="form" class="layui-form" style="margin-top: 25px">
+    @Html.AntiForgeryToken()
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编码</label>
+            <div class="layui-input-inline" >
+                <input type="hidden" name="Id" />
+                <input type="text" name="EnCode"  lay-verify="required" placeholder="请输入编码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline" >
+                <input type="text" name="Name"  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-inline" >
+                <select name="Type" lay-verify="required">
+                    <option value="">请选择类型</option>
+                    <option value="0">系统角色</option>
+                    <option value="1">业务角色</option>
+                    <option value="2">其他角色</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">所属机构</label>
+            <div class="layui-input-inline" >
+                <select lay-ignore class="select2" name="OrganizeId" lay-verify="required"  id="OrganizeId" style="width: 190px;">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">排序码</label>
+            <div class="layui-input-inline" >
+                <input type="number" name="SortCode" lay-verify="number" placeholder="请输入排序" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">选项</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-skin="primary" name="IsEnabled" value="true" title="启用" checked>
+                <input type="checkbox" lay-skin="primary" name="AllowEdit" value="true" title="允许编辑">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-inline" style="width: 514px;">
+            <textarea name="Remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" style="display: none">
+        <div class="layui-input-inline">
+            <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="add">提交</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form();
+        $("#OrganizeId").bindSelect({
+            url: "/System/Organize/GetListTreeSelect"
+        });
+
+        var primaryKey = $.getQueryString("primaryKey");
+        if (primaryKey) {
+            $.ajax({
+                url: "/System/Role/GetForm",
+                data: { primaryKey: primaryKey },
+                type: "post",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form").formSerialize(data);
+                }
+            });
+        }
+
+        form.render();
+
+        form.on('submit(add)', function (data) {
+            $.formSubmit({
+                url: "/System/Role/Form",
+                data: data.field
+            });
+            return false;
+        });
+    });
+
+</script>

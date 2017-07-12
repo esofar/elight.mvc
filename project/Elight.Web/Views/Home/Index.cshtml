@@ -1,0 +1,395 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Elight.MVC - 基于Web的通用管理系统轻量级解决方案</title>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="keywords" content="elight,elight.mvc官网,elight.mvc下载,elight.mvc框架,轻量级,后台管理系统,快速开发框架">
+    <meta name="description" content="Elight.MVC是一款基于Web的通用管理系统轻量级开发框架">
+    <link rel="shortcut icon" type="image/ico" href="~/favicon.ico" />
+    <link rel="bookmark" type="image/ico" href="~/favicon.ico" />
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/index.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/console.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/pace/dataurl.css" rel="stylesheet" />
+</head>
+<body class="animated fadeIn">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域 start -->
+        <div class="layui-header">
+            <div class="layui-header-title">
+                <img class="layui-header-logo" src="/Content/framework/images/logo.png" />
+                <span>
+                    <a class="layui-header-name">@ViewBag.SoftwareName</a>
+                    <a class="layui-header-sidebar" title="收缩菜单"><i class="fa fa-dedent" aria-hidden="true"></i></a>
+                </span>
+            </div>
+            <ul class="layui-nav">
+                <li class="layui-nav-item btn-donate">
+                    <a href="#">
+                        <i class="fa fa fa-heart" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="#">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="#">
+                        <i class="fa fa-bell" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item" style="margin-right: 10px">
+                    <a class="layui-header-user"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; @ViewBag.UserName</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a class="user-card"><i class="fa fa-edit" aria-hidden="true"></i>&nbsp;账户管理</a>
+                        </dd>
+                        <dd>
+                            <a class="btn-system-manage"><i class="fa fa-gear" aria-hidden="true"></i>&nbsp;系统设置</a>
+                        </dd>
+                        <dd>
+                            <a class="lock-user"><i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;锁定屏幕</a>
+                        </dd>
+                        <dd>
+                            <hr />
+                            <a href="/Account/Exit"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;安全退出</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <!-- 头部区域 end -->
+
+        <!-- 左侧导航区域 start -->
+        <div class="layui-side layui-bg-black layui-navbar animated fadeIn">
+            <div class="layui-side-scroll" lay-filter="side">
+            </div>
+        </div>
+        <!-- 左侧导航区域 end -->
+
+        <!-- 内容主体区域 start -->
+        <div class="layui-body">
+            <div class="layui-tab-rollleft">
+                <i class="fa fa-backward"></i>
+            </div>
+            <div class="layui-tab-rollright">
+                <i class="fa fa-forward"></i>
+            </div>
+            <div class="layui-tab-fullscreen">
+                <i class="fa fa-arrows-alt"></i>
+            </div>
+            <div class="layui-tab layui-tab-brief" lay-filter="tab">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">
+                        <cite>系统首页</cite>
+                    </li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <iframe src="/Home/Default" style="height: 560px"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 内容主体区域 end -->
+
+        <!-- 锁屏模板 start -->
+        <script type="text/template" class="layui-lock-tpl">
+            <div class="layui-lock-box" id="lock-box">
+                <div class="layui-lock-img">
+                    <img id="lockHeadIcon" src="@ViewBag.Avatar"/>
+                </div>
+                <div id="lockUserName" class="layui-lock-name">@ViewBag.Account</div>
+                <input id="lockPassword" type="text" class="layui-lock-input" value="输入密码解锁.." />
+                <button class="layui-btn layui-btn-small" id="btnUnlock">解锁</button>
+            </div>
+        </script>
+        <!-- 锁屏模板 end -->
+    </div>
+</body>
+</html>
+<script src="~/Content/jquery/jquery.min.js"></script>
+<script src="~/Content/jquery/jquery.md5.js"></script>
+<script src="~/Content/layui/layui.js"></script>
+<script src="~/Content/framework/js/global.js"></script>
+<script src="~/Content/pace/pace.min.js"></script>
+<script type="text/javascript">
+
+    var tab;
+    var layer;
+    var client = { permission: [] };
+    var _baseUrl = '/content/framework/js/';
+    var lay_modules_url = '/content/framework/js/';
+
+    layui.config({ base: lay_modules_url });
+
+    layui.use(['element', 'layer', 'navbar', 'tab', 'donate'], function () {
+        var element = layui.element();
+        var navbar = layui.navbar();
+
+        layer = layui.layer;
+        tab = layui.tab({
+            elem: '.layui-tab',
+            maxSetting: { max: 15 }
+        });
+
+        layui.donate({
+            elem: '.btn-donate',
+            alipay_url: 'http://cdn.codergao.cn/image/aliyun.png',
+            wechat_url: 'http://cdn.codergao.cn/image/wchat.png'
+        });
+
+        $(window).on('resize', function () {
+            var $content = $('.layui-tab .layui-tab-content');
+            $content.height($(this).height() - 95);
+            $content.find('iframe').each(function () {
+                $(this).height($content.height());
+            });
+        }).resize();
+
+        navbar.set({
+            spreadOne: true,
+            elem: '.layui-side-scroll',
+            cached: false,
+            url: '/Home/GetLeftMenu'
+        });
+        navbar.render();
+        navbar.on('click(side)', function (data) {
+            tab.tabAdd(data.field);
+        });
+
+        //加载用户权限。
+        $.ajax({
+            url: "/Home/GetPermission",
+            type: "post",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data && data.length > 0) {
+                    client.permission = data;
+                }
+            }
+        });
+
+        //收缩菜单栏。
+        $('.layui-header-sidebar').click(function () {
+            if ($('.layui-side').width() === 200) {
+                $('.layui-side').removeClass('layui-navbar').addClass('layui-navbar-min');
+                $('.layui-body').css('left', '60px');
+                $('.layui-side').find('.beg-navbar').find('a').each(function () {
+                    var tipIndex;
+                    $(this).mouseenter(function () {
+                        tipIndex = layer.tips($(this).find('cite').text(), this, { tips: [2, '#393D49'] });
+                    });
+                    $(this).mouseleave(function () {
+                        layer.close(tipIndex);
+                    });
+                });
+                $(this).children('i').removeClass('fa fa-dedent').addClass('fa fa-indent');
+            } else {
+                $('.layui-side').removeClass('layui-navbar-min').addClass('layui-navbar');
+                $('.layui-body').css('left', '200px');
+                $('.layui-side').find('.beg-navbar').find('a').each(function () {
+                    $(this).unbind('mouseenter');
+                    $(this).unbind('mouseleave');
+                });
+                $(this).children('i').removeClass('fa fa-indent').addClass('fa fa-dedent');
+            }
+        });
+
+        //全屏。
+        $('.layui-tab-fullscreen').click(function () {
+            var $that = $(this);
+            if ($that.children('i').hasClass('fa-arrows-alt')) {
+                var de = document.documentElement;
+                if (de.requestFullscreen) {
+                    de.requestFullscreen();
+                } else if (de.mozRequestFullScreen) {
+                    de.mozRequestFullScreen();
+                } else if (de.webkitRequestFullScreen) {
+                    de.webkitRequestFullScreen();
+                }
+                $that.children('i').removeClass('fa-arrows-alt').addClass('fa-arrows');
+            } else {
+                var de = document;
+                if (de.exitFullscreen) {
+                    de.exitFullscreen();
+                } else if (de.mozCancelFullScreen) {
+                    de.mozCancelFullScreen();
+                } else if (de.webkitCancelFullScreen) {
+                    de.webkitCancelFullScreen();
+                }
+                $that.children('i').removeClass('fa-arrows').addClass('fa-arrows-alt');
+            }
+
+        });
+
+        var _calSumWidth = function (element) {
+            var width = 0;
+            $(element).each(function () {
+                width += $(this).outerWidth(true);
+            });
+            return width;
+        }
+
+        //Tab页左偏移。
+        $('.layui-tab-rollleft').click(function () {
+            var marginLeftVal = parseInt($('.layui-tab-title').children('li:first').css('margin-left'));
+            var visibleWidth = $('.layui-tab-title').outerWidth(true);
+
+            var scrollVal = 0;
+            var tabContentSumWidth = 0;
+            $('.layui-tab-title').children().each(function () {
+                tabContentSumWidth += $(this).outerWidth(true);
+            });
+
+            if (tabContentSumWidth < visibleWidth) {
+                return false;
+            } else {
+                var tabElement = $('.layui-tab-title').children('li:first');
+
+                var offsetVal = 0;
+                while ((offsetVal + $(tabElement).outerWidth(true)) <= marginLeftVal) {
+                    offsetVal += $(tabElement).outerWidth(true);
+                    tabElement = $(tabElement).next();
+                }
+
+                offsetVal = 0;
+                if (_calSumWidth($(tabElement).prevAll()) > visibleWidth) {
+                    while ((offsetVal + $(tabElement).outerWidth(true)) < (visibleWidth) && tabElement.length > 0) {
+                        offsetVal += $(tabElement).outerWidth(true);
+                        tabElement = $(tabElement).prev();
+                    }
+                    scrollVal = _calSumWidth($(tabElement).prevAll());
+                }
+            }
+            $('.layui-tab-title').animate({
+                marginLeft: 40 - scrollVal + 'px'
+            }, "fast");
+
+        });
+
+        //Tab页右偏移。
+        $('.layui-tab-rollright').click(function () {
+            var marginLeftVal = parseInt($('.layui-tab-title').children('li:first').css('margin-left'));
+            var visibleWidth = $('.layui-tab-title').outerWidth(true);
+
+            var scrollVal = 0;
+            var tabContentSumWidth = 0;
+            $('.layui-tab-title').children().each(function () {
+                tabContentSumWidth += $(this).outerWidth(true);
+            });
+
+            if (tabContentSumWidth <= visibleWidth) {
+                return false;
+            } else {
+                var tabElement = $('.layui-tab-title').children('li:first');
+
+                var offsetVal = 0;
+                while ((offsetVal + $(tabElement).outerWidth(true)) <= marginLeftVal) {
+                    offsetVal += $(tabElement).outerWidth(true);
+                    tabElement = $(tabElement).next();
+                }
+
+                offsetVal = 0;
+                while ((offsetVal + $(tabElement).outerWidth(true)) < (visibleWidth) && tabElement.length > 0) {
+                    offsetVal += $(tabElement).outerWidth(true);
+                    tabElement = $(tabElement).next();
+                }
+
+
+                scrollVal = _calSumWidth($(tabElement).prevAll());
+                if (scrollVal > 0) {
+                    $('.layui-tab-title').animate({
+                        marginLeft: 40 - scrollVal + 'px'
+                    }, "fast");
+                }
+            }
+
+        });
+
+        $('.layui-nav .user-card').click(function () {
+            tab.tabAdd({
+                title: '账户管理',
+                href: '/Account/InfoCard'
+            });
+        });
+
+        //锁屏。
+        $('.layui-nav .lock-user').click(function () {
+            layer.open({
+                title: false,
+                type: 1,
+                closeBtn: 0,
+                anim: 6,
+                content: $('.layui-lock-tpl').html(),
+                shade: [0.9, '#393D49'],
+                success: function (layero, lockIndex) {
+                    isShowLock = true;
+                    layero.find('#lockHeadIcon').attr('src', $('#headIcon').attr('src'));
+                    layero.find('#lockUserName').text($('#userName').text());
+                    layero.find('#lockPassword').on('focus', function () {
+                        var $this = $(this);
+                        if ($this.val() === '输入密码解锁..') {
+                            $this.val('').attr('type', 'password');
+                        }
+                    }).on('blur', function () {
+                        var $this = $(this);
+                        if ($this.val() === '' || $this.length === 0) {
+                            $this.attr('type', 'text').val('输入密码解锁..');
+                        }
+                    });
+                    //防止浏览器被刷新，删除服务器登陆用户相关身份认证。
+                    $.ajax({
+                        url: "/Account/Lock",
+                        type: "post",
+                        dataType: "json",
+                        async: false,
+                        success: function (data) {
+                            if (data) {
+                                console.log("已清除用户认证信息，需要重新认证。");
+                            }
+                        }
+                    });
+                    //解锁方法。
+                    var _unlock = function (username, password) {
+                        $.post('/Account/Unlock', { username: username, password: $.md5(password) }, function (data) {
+                            if (data.state == 1) {
+                                layer.close(lockIndex);
+                            } else {
+                                layer.tips(data.message, '#lockPassword', {
+                                    tips: [1, '#000'],
+                                    time: 2000
+                                });
+                            }
+                        }, 'json');
+                    }
+                    //注册解锁按钮点击事件。
+                    layero.find('#btnUnlock').on('click', function () {
+                        var username = layero.find('#lockUserName').text();
+                        var password = layero.find('#lockPassword').val();
+                        if (password === '输入密码解锁..' || password.length === 0) {
+                            layer.tips('请输入密码！', '#lockPassword', {
+                                tips: [1, '#000'],
+                                time: 1000
+                            });
+                            return;
+                        }
+                        _unlock(username, password);
+                    });
+                    $('#lockPassword').bindEnterEvent(layero.find('#btnUnlock'));
+                }
+            });
+        });
+    });
+</script>

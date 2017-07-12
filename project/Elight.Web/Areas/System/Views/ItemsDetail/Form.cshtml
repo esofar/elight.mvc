@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<form id="form" class="layui-form" style="margin-top: 25px">
+    @Html.AntiForgeryToken()
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编码</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="Id" />
+                <input type="hidden" name="ItemId" id="ItemId" />
+                <input type="text" name="EnCode" lay-verify="required" placeholder="请输入编码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">选项名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Name" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">选项</label>
+            <div class="layui-input-inline">
+                <input type="checkbox" lay-skin="primary" name="IsEnabled" value="true" title="启用" checked>
+                <input type="checkbox" lay-skin="primary" name="IsDefault" value="true" title="默认值">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">排序码</label>
+            <div class="layui-input-inline">
+                <input type="number" name="SortCode" lay-verify="number" placeholder="请输入排序" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" style="display: none">
+        <div class="layui-input-block">
+            <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="add">提交</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form();
+
+        var primaryKey = $.getQueryString("primaryKey");
+        var itemId = $.getQueryString("itemId");
+        if (primaryKey) {
+            $.ajax({
+                url: "/System/ItemsDetail/GetForm",
+                data: { primaryKey: primaryKey },
+                type: "post",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form").formSerialize(data);
+                }
+            });
+        }
+        if (itemId) {
+            $('#ItemId').val(itemId);
+        }
+
+        form.render();
+
+        form.on('submit(add)', function (data) {
+            $.formSubmit({
+                url: "/System/ItemsDetail/Form",
+                data: data.field
+            });
+            return false;
+        });
+    });
+
+</script>

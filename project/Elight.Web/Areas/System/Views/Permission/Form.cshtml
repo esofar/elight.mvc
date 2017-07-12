@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<form id="form" class="layui-form" style="margin-top: 25px">
+    @Html.AntiForgeryToken()
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">编码</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="Id" />
+                <input type="text" name="EnCode" lay-verify="required" placeholder="请输入编码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Name" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">父级</label>
+            <div class="layui-input-inline">
+                <select class="select2" lay-ignore name="ParentId" lay-verify="required" id="ParentId" style="width: 190px">
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">连接</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Url" placeholder="请输入连接" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-inline">
+                <select name="Type" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">菜单</option>
+                    <option value="1">按钮</option>
+                    <option value="2">其他</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">事件</label>
+            <div class="layui-input-inline">
+                <input type="text" name="JsEvent" placeholder="请输入事件" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Icon" id="Icon" placeholder="请选择图标" autocomplete="off" class="layui-input">
+            </div>
+            <button class="layui-btn layui-btn-primary" id="btnSetIcon" style="position: absolute; left: 244px;">
+                <i class="layui-icon">&#xe615;</i>
+            </button>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">排序码</label>
+            <div class="layui-input-inline">
+                <input type="number" name="SortCode" lay-verify="number" placeholder="请输入排序" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选项</label>
+        <div class="layui-input-block">
+            <input type="checkbox" lay-skin="primary" name="IsEnable" value="true" title="启用" checked>
+            <input type="checkbox" lay-skin="primary" name="IsEdit" value="true" title="编辑">
+            <input type="checkbox" lay-skin="primary" name="IsPublic" value="true" title="公共">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block" style="width: 514px;">
+            <textarea name="Remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" style="display: none">
+        <div class="layui-input-block">
+            <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="add">提交</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'layer'], function () {
+        var form = layui.form();
+        var layer = layui.layer;
+        $("#ParentId").bindSelect({
+            url: "/System/Permission/GetParent"
+        });
+
+        var primaryKey = $.getQueryString("primaryKey");
+        if (primaryKey) {
+            $.ajax({
+                url: "/System/Permission/GetForm",
+                data: { primaryKey: primaryKey },
+                type: "post",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form").formSerialize(data);
+                }
+            });
+        }
+
+        form.render();
+
+        form.on('submit(add)', function (data) {
+            $.formSubmit({
+                url: "/System/Permission/Form",
+                data: data.field
+            });
+            return false;
+        });
+
+        $("#btnSetIcon").click(function () {
+            $.layerOpen({
+                id: "icon",
+                title: "设置图标",
+                width: "800px",
+                height: "580px",
+                maxmin: true,
+                content: "/System/Permission/Icon",
+                yes: function (body,win, index) {
+                    $('#Icon').val(win.className);
+                    top.layer.close(index);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

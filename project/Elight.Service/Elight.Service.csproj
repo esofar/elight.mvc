@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0F8031FB-AE93-4732-9AA9-DA5BD9D183F8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Elight.Service</RootNamespace>
+    <AssemblyName>Elight.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Elight.Web\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NLog.4.4.10\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\ItemsDetailService.cs" />
+    <Compile Include="System\ItemService.cs" />
+    <Compile Include="System\LogService.cs" />
+    <Compile Include="System\OrganizeService.cs" />
+    <Compile Include="System\PermissionService.cs" />
+    <Compile Include="System\RoleAuthorizeService.cs" />
+    <Compile Include="System\RoleService.cs" />
+    <Compile Include="System\UserLogOnService.cs" />
+    <Compile Include="System\UserRoleRelationService.cs" />
+    <Compile Include="System\UserService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Elight.Entity\Elight.Entity.csproj">
+      <Project>{a2475fc1-589f-46b3-ac20-e57e621cc994}</Project>
+      <Name>Elight.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Elight.Infrastructure\Elight.Infrastructure.csproj">
+      <Project>{f0e21eaa-5032-4e90-a0be-411c67c8ce82}</Project>
+      <Name>Elight.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Elight.IRepository\Elight.IRepository.csproj">
+      <Project>{eb66aee0-6d8c-42ea-a19d-59d5090fee40}</Project>
+      <Name>Elight.IRepository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Elight.IService\Elight.IService.csproj">
+      <Project>{d9b8906b-a20f-418d-8923-055f94f61579}</Project>
+      <Name>Elight.IService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Elight.Repository\Elight.Repository.csproj">
+      <Project>{d9dcf45e-dd12-43f9-a601-ff02b30607b7}</Project>
+      <Name>Elight.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

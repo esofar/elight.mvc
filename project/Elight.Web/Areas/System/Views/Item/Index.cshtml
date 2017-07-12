@@ -1,0 +1,195 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>字典列表</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/console.css" rel="stylesheet" />
+    <link href="~/Content/framework/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="~/Content/jquery/jquery.min.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/framework/js/global.js"></script>
+</head>
+<body>
+    <div style="margin: 15px">
+        <div id="toolbar" class="elight-table-toolbar">
+            <div class="layui-btn-group">
+                <button id="item-add" onclick="btn_add()" class="layui-btn layui-btn-primary layui-btn-small">
+                    <i class="fa fa-plus-square-o" aria-hidden="true"></i>新增字典
+                </button>
+                <button id="item-edit" onclick="btn_edit()" class="layui-btn layui-btn-primary layui-btn-small">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>修改字典
+                </button>
+                <button id="item-delete" onclick="btn_delete()" class="layui-btn layui-btn-primary layui-btn-small">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>删除字典
+                </button>
+                <button id="item-detail" onclick="btn_detail()" class="layui-btn layui-btn-primary layui-btn-small">
+                    <i class="fa fa-eye" aria-hidden="true"></i>查看字典
+                </button>
+            </div>
+            <button id="btnSearch" class="toolbar-search-button layui-btn layui-btn-normal layui-btn-small">
+                <i class="layui-icon">&#xe615;</i>
+            </button>
+            <div class="toolbar-search-input">
+                <input type="text" id="keyWord" placeholder="字典名称或编码" autocomplete="off" class="layui-input" />
+            </div>
+        </div>
+        <table id="gridList" class="layui-form layui-table elight-table" lay-skin="line">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" lay-skin="primary"></th>
+                    <th>编码</th>
+                    <th>名称</th>
+                    <th>排序码</th>
+                    <th>状态</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <!--内容容器-->
+            <tbody id="content"></tbody>
+        </table>
+        <div id="paged"></div>
+    </div>
+</body>
+</html>
+
+<!--内容模板-->
+<script id="contentTpl" type="text/html">
+    {{#  layui.each(d.list, function(index, item){ }}
+  <tr>
+      <td>
+          <input type="checkbox" lay-skin="primary" value="{{item.Id}}"></td>
+      <td>{{# if(item.EnCode==null){ }}
+          {{# }else{ }}{{item.EnCode}}
+          {{# } }}
+      </td>
+      <td>{{item.Name}}</td>
+      <td>{{item.SortCode}}</td>
+      <td>{{# if(item.IsEnabled==true){ }}  <span class="label label-success label-sm">启用</span>
+          {{# }else{ }}  <span class="label label-dark label-sm">禁用</span>
+          {{# } }}
+      </td>
+      <td>{{# if(item.Remark==null){ }} 
+          {{# }else{ }}{{item.Remark}}
+          {{# } }}
+      </td>
+  </tr>
+    {{#  }); }}
+     {{# if(d.list.length<=0) { }}
+        <tr style="color: red">
+            <td colspan="6">查无数据。</td>
+        </tr>
+    {{# } }}
+</script>
+
+<script type="text/javascript">
+    var paging;
+    layui.config({
+        base: parent._baseUrl
+    }).use(['paging', 'form'], function () {
+        var form = layui.form();
+        paging = layui.paging();
+        initGrid();
+        $('#btnSearch').click(initGrid);
+        $('#keyWord').bindEnterEvent(initGrid);
+    });
+
+    function initGrid() {
+        paging.init({
+            url: '/System/Item/Index',
+            elem: '#content',
+            tempElem: '#contentTpl',
+            params: {
+                keyWord: $("#keyWord").val()
+            },
+            pageConfig: {
+                elem: '#paged',
+                pageSize: 10,
+            },
+            success: function () {
+
+            },
+            fail: function (msg) {
+                top.layer.msg(msg);
+            }
+        });
+    }
+
+    function btn_add() {
+        $.layerOpen({
+            id: "add",
+            title: "新增字典",
+            width: "670px",
+            height: "410px",
+            content: "/System/Item/Form",
+            yes: function (iBody) {
+                iBody.find('#btnSubmit').click();
+                initGrid();
+            }
+        });
+    }
+
+    function btn_edit() {
+        var ids = $("#gridList").gridSelectedRowValue();
+        if (ids.length != 1) {
+            $.layerMsg("请勾选单条记录修改。", "warning");
+            return;
+        }
+        $.layerOpen({
+            id: "edit",
+            title: "修改字典",
+            width: "670px",
+            height: "410px",
+            content: "/System/Item/Form?primaryKey=" + ids[0],
+            yes: function (iBody) {
+                iBody.find('#btnSubmit').click();
+                initGrid();
+            }
+        });
+    }
+
+    function btn_delete() {
+        var ids = $("#gridList").gridSelectedRowValue();
+        if (ids.length < 1) {
+            $.layerMsg("请勾选需要删除的字典。", "warning");
+            return;
+        }
+        $.layerConfirm({
+            content: "您已选中" + ids.length + "条数据, 确定删除吗？",
+            callback: function () {
+                $.formSubmit({
+                    url: '/System/Item/Delete',
+                    data: { primaryKey: ids.join() },
+                    success: function () {
+                        initGrid();
+                    }
+                });
+            }
+        });
+    }
+
+    function btn_detail() {
+        var ids = $("#gridList").gridSelectedRowValue();
+        if (ids.length != 1) {
+            $.layerMsg("请勾选单条记录查看。", "warning");
+            return;
+        }
+        $.layerOpen({
+            id: "detail",
+            title: "查看字典",
+            width: "670px",
+            height: "490px",
+            content: "/System/Item/Detail?primaryKey=" + ids[0],
+            btn: null
+        });
+    }
+
+</script>
+
