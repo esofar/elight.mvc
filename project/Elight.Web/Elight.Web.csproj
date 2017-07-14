@@ -391,6 +391,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Account\Login.cshtml" />
+    <None Include="Properties\PublishProfiles\ad.pubxml" />
     <None Include="Properties\PublishProfiles\elight.pubxml" />
     <Content Include="Views\Account\ModifyPwd.cshtml" />
     <None Include="Web.Debug.config">

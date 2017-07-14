@@ -39,10 +39,8 @@ namespace Elight.Web.Controllers
             if (OperatorProvider.Instance.Current != null)
             {
                 ViewBag.SoftwareName = Configs.GetValue("SoftwareName");
-
                 ViewBag.Account = OperatorProvider.Instance.Current.Account;
                 ViewBag.Avatar = OperatorProvider.Instance.Current.Avatar;
-
                 return View();
             }
             else

@@ -180,7 +180,7 @@ namespace Elight.Infrastructure
                 {
                     return string.Empty;
                 }
-                return this.data.region + this.data.country + this.data.city;
+                return string.Format("{0} {1} {2}", this.data.country, this.data.region, this.data.city);
             }
         }
 

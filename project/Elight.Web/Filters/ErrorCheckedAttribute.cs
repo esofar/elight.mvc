@@ -19,6 +19,8 @@ namespace Elight.Web.Filters
             filterContext.ExceptionHandled = true;
             StringBuilder script = new StringBuilder();
 
+            LogHelper.Error(filterContext.Exception.StackTrace);
+
             if (OperatorProvider.Instance.Current == null)
             {
                 script.Append("<script>top.alert('登陆超时，请重新认证。'); top.window.location.href='/Account/Login'</script>");

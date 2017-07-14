@@ -49,7 +49,7 @@
                     </a>
                 </li>
                 <li class="layui-nav-item" style="margin-right: 10px">
-                    <a class="layui-header-user"><i class="fa fa-user" aria-hidden="true"></i>&nbsp; @ViewBag.UserName</a>
+                    <a class="layui-header-user"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;</a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a class="user-card"><i class="fa fa-edit" aria-hidden="true"></i>&nbsp;账户管理</a>
@@ -336,8 +336,6 @@
                 shade: [0.9, '#393D49'],
                 success: function (layero, lockIndex) {
                     isShowLock = true;
-                    layero.find('#lockHeadIcon').attr('src', $('#headIcon').attr('src'));
-                    layero.find('#lockUserName').text($('#userName').text());
                     layero.find('#lockPassword').on('focus', function () {
                         var $this = $(this);
                         if ($this.val() === '输入密码解锁..') {
